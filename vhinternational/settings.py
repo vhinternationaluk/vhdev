@@ -54,7 +54,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 ROOT_URLCONF = 'vhinternational.urls'
 
 TEMPLATES = [
