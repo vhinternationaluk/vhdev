@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'accounts',
-    'product'
+    'product',
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -52,10 +53,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+
 ROOT_URLCONF = 'vhinternational.urls'
 
 TEMPLATES = [
@@ -80,13 +80,24 @@ WSGI_APPLICATION = 'vhinternational.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Poiuytrewq123@',
+#         'HOST': 'db.goyusxtiftyvfdcxbubs.supabase.co',
+#         'PORT': '5432',
+#     }
+# }/
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "neondb",
         "USER": "neondb_owner",
-        "PASSWORD": "npg_rMmNLJU68cOw",
-        "HOST": "ep-long-hall-ady8qxm6-pooler.c-2.us-east-1.aws.neon.tech",
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
         "PORT": "5432",
         "CONN_MAX_AGE": 600,
         "OPTIONS": {
@@ -154,8 +165,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
 }
-AWS_ACCESS_KEY_ID = 'AKIASFDNQ67CHGYI7QUD'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.environ.get("A_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("A_SECRET")
 AWS_STORAGE_BUCKET_NAME = "sumittestbucket2908"
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 AWS_S3_SIGNATURE_NAME='s3v4'
@@ -186,3 +197,5 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/'
 # AWS_S3_SIGNATURE_VERSION = 's4'
 GOOGLE_OAUTH2_CLIENT_ID = "784177870479-5t33hd0o0a4m8pt2ecpjfebgspnr77ev.apps.googleusercontent.com"
 GOOGLE_OAUTH2_CLIENT_SECRET = "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"
+RAZORPAY_KEY_ID = os.environ.get("R_ID")
+RAZORPAY_KEY_SECRET = os.environ.get("R_SECRET")
