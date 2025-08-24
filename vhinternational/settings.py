@@ -81,13 +81,18 @@ WSGI_APPLICATION = 'vhinternational.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'Poiuytrewq123@',
-        'HOST': 'db.goyusxtiftyvfdcxbubs.supabase.co',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "neondb",
+        "USER": "neondb_owner",
+        "PASSWORD": "npg_rMmNLJU68cOw",
+        "HOST": "ep-long-hall-ady8qxm6-pooler.c-2.us-east-1.aws.neon.tech",
+        "PORT": "5432",
+        "CONN_MAX_AGE": 600,
+        "OPTIONS": {
+            "sslmode": "require",
+            "channel_binding": "require",
+        },
     }
 }
 
