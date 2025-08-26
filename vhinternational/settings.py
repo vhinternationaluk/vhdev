@@ -190,7 +190,7 @@ AWS_LOCATION = 'static'
 AWS_MEDIA_LOCATION = 'media'
 # URLs
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
 
 # Optional: For better performance
 # AWS_S3_FILE_OVERWRITE = False
