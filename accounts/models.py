@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
+
 class User(AbstractUser):
     USER_TYPE_CHOICES = [
         ('common', 'Common User'),
@@ -9,17 +10,16 @@ class User(AbstractUser):
     ]
 
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='common')
-    first_name = models.CharField(max_length=255, null=True, blank=True)
-    last_name = models.CharField(max_length=255, null=True, blank=True)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255, null=True, blank=True)
     mobile = models.CharField(max_length=20, null=True, blank=True)
     profile_img = models.ImageField(upload_to="profile_image", null=True, blank=True)
     google_id = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # Override default M2M fields to avoid conflicts
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255, null=True, blank=True)
+    # Override M2M fields to avoid conflicts
     groups = models.ManyToManyField(
         Group,
         related_name='custom_user_set',
@@ -45,6 +45,7 @@ class User(AbstractUser):
     @property
     def is_superadmin(self):
         return self.user_type == 'superadmin'
+
 
 class RefreshToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='refresh_tokens')

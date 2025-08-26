@@ -422,3 +422,10 @@ def user_address_detail(request, address_id):
         }, status=status.HTTP_200_OK)
 
 
+class UserIsAdminView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Return if the authenticated user is admin or above
+        is_admin = getattr(request.user, 'is_admin_or_above', False)
+        return Response({'is_admin': is_admin})
