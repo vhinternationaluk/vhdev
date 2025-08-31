@@ -106,3 +106,56 @@ class TokenManager:
             return new_access_token, user
         except RefreshToken.DoesNotExist:
             return None, None
+
+
+import boto3
+import os
+import uuid
+from django.conf import settings
+from botocore.exceptions import ClientError
+import logging
+
+logger = logging.getLogger(__name__)
+
+def upload_file_to_s3(file, folder_name="uploads"):
+    """
+    Custom function to upload files directly to S3
+    Returns the S3 URL if successful, None if failed
+    """
+    try:
+        # Initialize S3 client
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+            aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
+            region_name=os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
+        )
+        
+        # Generate unique filename
+        file_extension = file.name.split('.')[-1]
+        unique_filename = f"{folder_name}/{uuid.uuid4()}.{file_extension}"
+        
+        # Upload file
+        s3_client.upload_fileobj(
+            file,
+            os.environ.get('AWS_STORAGE_BUCKET_NAME'),
+            unique_filename,
+            ExtraArgs={
+                'ContentType': file.content_type,
+                'ACL': 'public-read'  # Make file publicly accessible
+            }
+        )
+        
+        # Return S3 URL
+        bucket_name = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+        s3_url = f"https://{bucket_name}.s3.amazonaws.com/{unique_filename}"
+        
+        logger.info(f"File uploaded successfully to: {s3_url}")
+        return s3_url
+        
+    except ClientError as e:
+        logger.error(f"S3 upload failed: {e}")
+        return None
+    except Exception as e:
+        logger.error(f"Unexpected error during upload: {e}")
+        return None

@@ -19,7 +19,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255, null=True, blank=True)
-    # Override M2M fields to avoid conflicts
+    profile_img_url = models.URLField(max_length=500, null=True, blank=True)
     groups = models.ManyToManyField(
         Group,
         related_name='custom_user_set',

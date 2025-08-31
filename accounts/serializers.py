@@ -3,10 +3,11 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from .models import User,Address
 import re
-
+from utils import upload_file_to_s3
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
-    profile_img = serializers.ImageField(required=False, allow_null=True)
+    profile_img = serializers.ImageField(required=False, allow_null=True, write_only=True)
+    profile_img_url = serializers.URLField(read_only=True)  
 
     class Meta:
         model = User
@@ -24,10 +25,25 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        profile_img = validated_data.pop('profile_img', None)
+        
+        # Create user without image first
         user = User.objects.create_user(
             user_type='common',
             **validated_data
         )
+        
+        # Handle custom image upload
+        if profile_img:
+            s3_url = upload_file_to_s3(profile_img, "profile_images")
+            if s3_url:
+                # Store the S3 URL in a custom field or handle as needed
+                user.profile_img_url = s3_url
+                user.save()
+            else:
+                # Handle upload failure
+                raise serializers.ValidationError("Failed to upload profile image")
+        
         return user
 
 class UserLoginSerializer(serializers.Serializer):
