@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from .models import User,Address
 import re
-from utils import upload_file_to_s3
+from .utils import upload_file_to_s3
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
     profile_img = serializers.ImageField(required=False, allow_null=True, write_only=True)
