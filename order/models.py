@@ -97,7 +97,7 @@ class Payment(models.Model):
     paymentId = models.CharField(max_length=100, unique=True)
     method = models.CharField(max_length=20, choices=METHOD_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    
+    Error=models.CharField(max_length=500,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
