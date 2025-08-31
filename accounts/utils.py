@@ -187,7 +187,7 @@ def upload_file_to_s3(file, folder_name="profile_images"):
             unique_filename,
             ExtraArgs={
                 'ContentType': file.content_type or 'image/jpeg',
-                'ACL': 'public-read'
+
             }
         )
         
