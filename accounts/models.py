@@ -11,7 +11,7 @@ class User(AbstractUser):
 
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='common')
     mobile = models.CharField(max_length=20, null=True, blank=True)
-    profile_img = models.ImageField(upload_to="profile_image", null=True, blank=True)
+    profile_img = models.URLField(max_length=500, null=True, blank=True)
     google_id = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -19,7 +19,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255, null=True, blank=True)
-    profile_img_url = models.URLField(max_length=500, null=True, blank=True)
+    # profile_img_url = models.URLField(max_length=500, null=True, blank=True)
     groups = models.ManyToManyField(
         Group,
         related_name='custom_user_set',

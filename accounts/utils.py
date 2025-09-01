@@ -195,7 +195,7 @@ def upload_file_to_s3(file, folder_name="profile_images"):
         s3_url = f"https://{required_vars['AWS_STORAGE_BUCKET_NAME']}.s3.amazonaws.com/{unique_filename}"
         
         logger.info(f"Upload successful! URL: {s3_url}")
-        return {'success': True, 'url': s3_url}
+        return  s3_url
         
     except NoCredentialsError:
         logger.error("AWS credentials not found")

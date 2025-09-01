@@ -7,11 +7,11 @@ from .utils import upload_file_to_s3
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
     profile_img = serializers.ImageField(required=False, allow_null=True, write_only=True)
-    profile_img_url = serializers.URLField(read_only=True)  
+    # profile_img_url = serializers.URLField(read_only=True)  
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password','mobile','profile_img_url',  'first_name', 'last_name','profile_img')
+        fields = ('username', 'email', 'password','mobile',  'first_name', 'last_name','profile_img')
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
@@ -38,7 +38,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             s3_url = upload_file_to_s3(profile_img, "profile_images")
             if s3_url:
                 # Store the S3 URL in a custom field or handle as needed
-                user.profile_img_url = s3_url
+                user.profile_img = s3_url
                 user.save()
             else:
                 # Handle upload failure
