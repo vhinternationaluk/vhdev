@@ -150,9 +150,9 @@ def add_to_cart(request):
             if not item_created:
                 # Item already exists, update quantity
                 new_quantity = cart_item.quantity + quantity
-                if product.stock_quantity < new_quantity:
+                if product.quantity < new_quantity:
                     return Response(
-                        {'error': f'Cannot add {quantity} items. Only {product.stock_quantity - cart_item.quantity} more available.'}, 
+                        {'error': f'Cannot add {quantity} items. Only {product.quantity - cart_item.quantity} more available.'}, 
                         status=status.HTTP_400_BAD_REQUEST
                     )
                 cart_item.quantity = new_quantity
