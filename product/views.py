@@ -180,9 +180,9 @@ def update_cart_item(request, itemId):
         quantity = serializer.validated_data['quantity']
         
         # Check stock availability
-        if cart_item.product.stock_quantity < quantity:
+        if cart_item.product.quantity < quantity:
             return Response(
-                {'error': f'Only {cart_item.product.stock_quantity} items available in stock.'}, 
+                {'error': f'Only {cart_item.product.quantity} items available in stock.'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
         
